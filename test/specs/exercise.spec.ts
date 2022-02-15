@@ -1,5 +1,6 @@
 import HomePage from "../pages/home.page";
 import data from "../data/exercise.data.json";
+import homePage from "../pages/home.page";
 
 
 
@@ -46,6 +47,7 @@ describe('Search and Enroll Course', () => {
 
     it('Should fill out registration form', async () => {
         //Act
+        //TODO: Better to pass the input value instead
         await HomePage.fillOutRegistrationForm()
         await HomePage.alert.waitForDisplayed()
         
@@ -64,11 +66,9 @@ describe('Search and Enroll Course', () => {
         expect(browser).toHaveTitleContaining('Lifetime Membership Club')
     });
 
-    it.only(`Scroll to ${data.headerText}`, async () => {
-        await browser.maximizeWindow()
-        await browser.url('/lifetime-membership-club/')
 
-        const element = $(`h2=${data.headerText}`)
+    it(`Scroll to ${data.headerText}`, async () => {
+        const element = await $(`h2=${data.headerText}`)
 
         //Arrange
         await element.waitForDisplayed()
@@ -80,7 +80,8 @@ describe('Search and Enroll Course', () => {
         expect(await element.isDisplayedInViewport()).toBe(true)
     });
 
-    it.only(`Slide Carousel to view course ${data.courseName}`, async () => {
+
+    it(`Slide Carousel to view course ${data.courseName}`, async () => {
         //Arrange
         await HomePage.carouselSection.click()
         await HomePage.scrollCourseIntoView(data.courseName)
@@ -89,7 +90,24 @@ describe('Search and Enroll Course', () => {
         await HomePage.getStartedBtn.click()
 
         //Assert
-        expect(browser).toHaveUrl(data.courseUrl)
+        //TODO: Check why toHaveUrl negative test is not working
+        expect(await browser.getUrl()).toBe(data.courseUrl)
+    });
+
+
+    it.only(`Should search for the topic ${data.topic}`, async () => {
+        await browser.maximizeWindow()
+        await browser.url('https://www.selenium-tutorial.com/p/automation-architect-in-selenium-7-live-projects')
+        
+        //Arrange
+        await HomePage.expandBtnPerform()
+
+        //Act
+        await HomePage.startTopic(data.topic)
+
+        //Assert
+        expect((await HomePage.lectureHeading.getText()).trim())
+                                        .toBe(data.topic);
     });
         
         

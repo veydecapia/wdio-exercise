@@ -120,20 +120,50 @@ class HomePage extends BasePage{
         courseName: string
     ) => {
         const text = await this.infoBoxTitle.getText()
-
         if(text !== courseName){
             await this.rightArrowBtn.click()
 
             await this.scrollCourseIntoView(courseName)
         }
-
     }
 
     get getStartedBtn(){
         return this.activeSlide.$('a')
     }
 
+    private get expandBtn(){
+        return $('.fa.fa-chevron-down')
+    }
 
+    get lectureHeading(){
+        return $('#lecture_heading')
+    }
+
+    expandBtnPerform = async () => {
+        await this.expandBtn.scrollIntoView()    
+        await this.expandBtn.waitForClickable()
+        await this.expandBtn.click()
+    }
+
+    startTopic = async (
+        text: string
+    ) => {
+        const element = await $(`*=${text}`)
+
+        await element.scrollIntoView({
+                                    block: "end", 
+                                    inline: "nearest", 
+                                    behavior: "smooth"
+                                    })
+
+        await element.$('.lecture-start').click()
+    }
+
+
+
+
+
+    //===========================================
 
     getActionNames1 = async () => {
 

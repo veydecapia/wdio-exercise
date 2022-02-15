@@ -4,5 +4,6 @@
     "alertText": "This is just a dummy form, you just clicked SUBMIT BUTTON",
     "headerText": "20+ Courses video library FREE ACCESS",
     "courseName": "Automation Architect Selenium with 7 live projects",
-    "courseUrl": "https://www.selenium-tutorial.com/p/automation-architect-in-selenium-7-live-projects"
+    "courseUrl": "https://www.selenium-tutorial.com/p/automation-architect-in-selenium-7-live-projects",
+    "topic": "CucumberParallelWithPageObjects - Project Code"
 }
