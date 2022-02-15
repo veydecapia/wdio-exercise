@@ -16,4 +16,4 @@ apps/
 *.log
 chromeDriver
 .tmp
-results
+results/
