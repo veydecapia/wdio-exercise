@@ -16,8 +16,9 @@ describe('Search and Enroll Course', () => {
         expect(await HomePage.logo.isDisplayed()).toBe(true)
     });
 
+
     it.skip('Should list all Action name', async () => {
-        await HomePage.getActionNames()
+        // await HomePage.getActionNames()
     });
 
 
@@ -44,15 +45,51 @@ describe('Search and Enroll Course', () => {
 
 
     it('Should fill out registration form', async () => {
-        // await browser.url('/way2auto_jquery/index.php')
-
         //Act
         await HomePage.fillOutRegistrationForm()
         await HomePage.alert.waitForDisplayed()
-
+        
         //Assert
         expect(await HomePage.alert.getText())
-                                .toBe(data.alertText)
+        .toBe(data.alertText)
+    });
+    
+    
+    it('Go to Explore Lifetime Membership Page', async () => {
+        //Act
+        await HomePage.goToLinkButton('EXPLORE LIFETIME MEMBERSHIP');
+
+        //Assert
+        expect(browser).toHaveUrlContaining('lifetime-membership-club')
+        expect(browser).toHaveTitleContaining('Lifetime Membership Club')
+    });
+
+    it.only(`Scroll to ${data.headerText}`, async () => {
+        await browser.maximizeWindow()
+        await browser.url('/lifetime-membership-club/')
+
+        const element = $(`h2=${data.headerText}`)
+
+        //Arrange
+        await element.waitForDisplayed()
+
+        //Act
+        await element.scrollIntoView()
+
+        //Assert
+        expect(await element.isDisplayedInViewport()).toBe(true)
+    });
+
+    it.only(`Slide Carousel to view course ${data.courseName}`, async () => {
+        //Arrange
+        await HomePage.carouselSection.click()
+        await HomePage.scrollCourseIntoView(data.courseName)
+
+        //Act
+        await HomePage.getStartedBtn.click()
+
+        //Assert
+        expect(browser).toHaveUrl(data.courseUrl)
     });
         
         

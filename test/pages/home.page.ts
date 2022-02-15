@@ -61,9 +61,12 @@ class HomePage extends BasePage{
         return $('#alert')
     }
 
+
     /**
+     * @description
      * Fill out the registration form based from
-     * the registration.json data See test/data/registration.json
+     * the registration.json data 
+     * See: test/data/registration.json
      */
     fillOutRegistrationForm = async () => {
         await this.nameTxtbox.setValue(register.name)
@@ -75,11 +78,62 @@ class HomePage extends BasePage{
         await this.passwordTxtbox.setValue(register.password)
         
         //Click Submit Button
-        await this.submitBtn.waitForClickable();
+        await this.submitBtn.waitForClickable()
         await this.submitBtn.click()
     }
 
-    
+
+    goToLinkButton = async (
+        text: string
+    ) => {
+        const element = $(`=${text}`)
+
+        await element.waitForClickable()
+        await element.click()
+    }
+
+    private get rightArrowBtn(){
+        return $('.fas.fa-angle-right')
+    }
+
+    get carouselSection(){
+        return $('.pp-info-box-carousel-wrap')
+    }
+
+    private get activeSlide(){
+        return this.carouselSection
+                    .$('.swiper-slide.swiper-slide-active')
+    }
+
+    private get infoBoxTitle(){
+        return this.activeSlide
+                    .$('.pp-info-box-title')
+    }
+
+    /**
+     * @description
+     * Slides the carousel until the desired course is in view
+     * Clicks next slide rightArrowBtn (>)
+     * @param {string} courseName Exact course text to be viewed
+     */
+    scrollCourseIntoView = async (
+        courseName: string
+    ) => {
+        const text = await this.infoBoxTitle.getText()
+
+        if(text !== courseName){
+            await this.rightArrowBtn.click()
+
+            await this.scrollCourseIntoView(courseName)
+        }
+
+    }
+
+    get getStartedBtn(){
+        return this.activeSlide.$('a')
+    }
+
+
 
     getActionNames1 = async () => {
 
