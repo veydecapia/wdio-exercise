@@ -1,7 +1,6 @@
 import HomePage from "../pages/home.page";
 import data from "../data/exercise.data.json";
-import homePage from "../pages/home.page";
-
+import { waitForPageToLoad } from "../shared/utils";
 
 
 describe('Search and Enroll Course', () => {
@@ -95,19 +94,82 @@ describe('Search and Enroll Course', () => {
     });
 
 
-    it.only(`Should search for the topic ${data.topic}`, async () => {
-        await browser.maximizeWindow()
-        await browser.url('https://www.selenium-tutorial.com/p/automation-architect-in-selenium-7-live-projects')
-        
+    it(`Should search for the topic ${data.topic}`, async () => {
         //Arrange
         await HomePage.expandBtnPerform()
 
         //Act
         await HomePage.startTopic(data.topic)
+        await waitForPageToLoad()
+        await HomePage.lectureHeading.waitForDisplayed()
 
         //Assert
-        expect((await HomePage.lectureHeading.getText()).trim())
-                                        .toBe(data.topic);
+        const text = (await HomePage.lectureHeading.getText()).trim()
+        expect(text).toBe(data.topic)
+    });
+
+
+    it('Should navigate back to previous page', async () => {
+        //Act
+        await browser.back()
+
+        //Act
+        await browser.back()
+        await waitForPageToLoad()
+        await (await HomePage.h2Element("Get started now!")).waitForDisplayed()
+
+        //Assert
+        expect(await browser.getUrl()).toBe(data.courseUrl)
+    });
+
+
+    it(`Should select ${data.currency}`, async () => {
+        //Act
+        const element = await HomePage.h3Element(data.currency)
+        await element.scrollIntoView({
+            block: "end", 
+            inline: "nearest", 
+            behavior: "smooth"
+        })
+        await element.click()
+
+        //Assert
+        const priceText = await HomePage.activeProductPrice.getText()
+        expect(priceText).toBe('£15')
+    });
+
+
+    it('Should enroll in course', async () => {
+        //Act
+        await HomePage.enrollCourseBtn.click()
+
+        //Assert
+        const expectedText = 'Processing...'
+        await browser.waitUntil(
+           async () => (await HomePage.enrollCourseBtn.getText() === expectedText),
+           {
+               timeout: 3000,
+               timeoutMsg: `Expected text to be changed to ${expectedText}`
+           }
+        )
+
+        const text = await HomePage.enrollCourseBtn.getText()
+        expect(text).toBe(expectedText)
+        expect(await HomePage.enrollCourseBtn.isEnabled()).toBe(false)
+        
+        await waitForPageToLoad()
+        expect(browser).toHaveUrlContaining('checkout')
+    });
+
+
+    describe.only('Checkout - Verify Required Error', () => {
+        it('Email', () => {
+            browser.maximizeWindow()
+            browser.url('https://sso.teachable.com/secure/673/checkout/1310108/automation-architect-in-selenium-7-live-projects')
+
+            
+        });
+
     });
         
         

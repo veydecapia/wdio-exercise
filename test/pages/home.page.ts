@@ -68,7 +68,7 @@ class HomePage extends BasePage{
      * the registration.json data 
      * See: test/data/registration.json
      */
-    fillOutRegistrationForm = async () => {
+    fillOutRegistrationForm = async ():Promise<void> => {
         await this.nameTxtbox.setValue(register.name)
         await this.phoneTxtbox.setValue(register.phone)
         await this.emailTxtbox.setValue(register.email)
@@ -118,7 +118,7 @@ class HomePage extends BasePage{
      */
     scrollCourseIntoView = async (
         courseName: string
-    ) => {
+    ): Promise<void> => {
         const text = await this.infoBoxTitle.getText()
         if(text !== courseName){
             await this.rightArrowBtn.click()
@@ -139,7 +139,14 @@ class HomePage extends BasePage{
         return $('#lecture_heading')
     }
 
-    expandBtnPerform = async () => {
+    expandBtnPerform = async (): Promise<void> => {
+        //TODO: Create helper function for click
+        /**
+         * 1. Ensure element is visible (exist/displayed)
+         * 2. Scroll element into view (center)
+         * 3. Ensure element is clickable
+         * 4. Perform click
+         */
         await this.expandBtn.scrollIntoView()    
         await this.expandBtn.waitForClickable()
         await this.expandBtn.click()
@@ -147,16 +154,41 @@ class HomePage extends BasePage{
 
     startTopic = async (
         text: string
-    ) => {
+    ): Promise<void> => {
         const element = await $(`*=${text}`)
 
         await element.scrollIntoView({
-                                    block: "end", 
-                                    inline: "nearest", 
-                                    behavior: "smooth"
+                                        block: "end", 
+                                        inline: "nearest", 
+                                        behavior: "smooth"
                                     })
 
         await element.$('.lecture-start').click()
+    }
+
+
+    h2Element = async (
+        text: string
+    ) => {
+        return await $(`h2*=${text}`)
+    }
+
+    h3Element = async (
+        text: string
+    ) => {
+        return await $(`h3*=${text}`)
+    }
+
+    get activeProductPrice(){
+        return $('.active .product-price .default-product-price')
+    }
+
+    get enrollCourseBtn(){
+        return $('#enroll-button')
+    }
+
+    get orderSummaryText(){
+        return $('span=Order Summary')
     }
 
 
