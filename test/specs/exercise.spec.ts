@@ -8,6 +8,7 @@ describe('Search and Enroll Course', () => {
 
     it('Should navigate to the demo page', async () => {
         //Arrange
+        await browser.maximizeWindow()
         await HomePage.open()
 
         //Assert
@@ -81,13 +82,15 @@ describe('Search and Enroll Course', () => {
     });
 
 
-    it(`Slide Carousel to view course ${data.courseName}`, async () => {
+    it(`Slide Carousel to view course`, async () => {
         //Arrange
-        await HomePage.carouselSection.click()
-        await HomePage.scrollCourseIntoView(data.courseName)
+        await click(await HomePage.carouselSection)
 
+        await HomePage.slideCourseIntoView(data.courseName)
+        // await browser.debug()
+        
         //Act
-        await HomePage.getStartedBtn.click()
+        await click(await HomePage.getStartedBtn)
 
         //Assert
         //TODO: Check why toHaveUrl negative test is not working
@@ -97,7 +100,7 @@ describe('Search and Enroll Course', () => {
 
     it(`Should search for the topic ${data.topic}`, async () => {
         //Arrange
-        await HomePage.expandBtnPerform()
+        await click(await HomePage.expandBtn)
 
         //Act
         await HomePage.startTopic(data.topic)
@@ -132,7 +135,7 @@ describe('Search and Enroll Course', () => {
             inline: "nearest", 
             behavior: "smooth"
         })
-        await element.click()
+        await click(element)
 
         //Assert
         const priceText = await HomePage.activeProductPrice.getText()
@@ -142,9 +145,8 @@ describe('Search and Enroll Course', () => {
 
     it('Should enroll in course', async () => {
         //Act
-        await HomePage.enrollCourseBtn.click()
+        await click(await HomePage.enrollCourseBtn)
 
-        //Assert
         const expectedText = 'Processing...'
         await browser.waitUntil(
            async () => (await HomePage.enrollCourseBtn.getText() === expectedText),
@@ -154,22 +156,21 @@ describe('Search and Enroll Course', () => {
            }
         )
 
+        //Assert
         const text = await HomePage.enrollCourseBtn.getText()
         expect(text).toBe(expectedText)
         expect(await HomePage.enrollCourseBtn.isEnabled()).toBe(false)
         
         await waitForDocumentToLoad()
         expect(browser).toHaveUrlContaining('checkout')
+        await CheckoutPage.orderSummaryText.waitForDisplayed()
         expect(await CheckoutPage.orderSummaryText.isDisplayed()).toBe(true)
     });
 
 
-    describe.only('Checkout - Verify Required Error', async () => {
+    describe('Checkout - Verify Required Error', async () => {
 
         it('Email', async () => {
-            browser.maximizeWindow()
-            browser.url('https://sso.teachable.com/secure/673/checkout/1310108/automation-architect-in-selenium-7-live-projects')
-
             const element = await CheckoutPage.emailTxtbox
             const blurElement = await CheckoutPage.orderSummaryText
 

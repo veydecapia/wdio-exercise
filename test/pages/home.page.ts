@@ -1,5 +1,6 @@
 import BasePage from "./base.page";
 import register from "../data/registration.json";
+import { click } from "../shared/utils";
 
 
 class HomePage extends BasePage{
@@ -117,14 +118,18 @@ class HomePage extends BasePage{
      * Clicks next slide rightArrowBtn (>)
      * @param {string} courseName Exact course text to be viewed
      */
-    scrollCourseIntoView = async (
+    slideCourseIntoView = async (
         courseName: string
     ): Promise<void> => {
-        const text = await this.infoBoxTitle.getText()
-        if(text !== courseName){
-            await this.rightArrowBtn.click()
+        const text = (await this.infoBoxTitle.getText()).trim()
 
-            await this.scrollCourseIntoView(courseName)
+        console.log("Infobar Title: " + text)
+
+        if(text !== courseName){
+            // await this.rightArrowBtn.click()
+            await click(await this.rightArrowBtn)
+            
+            await this.slideCourseIntoView(courseName)
         }
     }
 
@@ -132,25 +137,12 @@ class HomePage extends BasePage{
         return this.activeSlide.$('a')
     }
 
-    private get expandBtn(){
+    get expandBtn(){
         return $('.fa.fa-chevron-down')
     }
 
     get lectureHeading(){
         return $('#lecture_heading')
-    }
-
-    expandBtnPerform = async (): Promise<void> => {
-        //TODO: Create helper function for click
-        /**
-         * 1. Ensure element is visible (exist/displayed)
-         * 2. Scroll element into view (center)
-         * 3. Ensure element is clickable
-         * 4. Perform click
-         */
-        await this.expandBtn.scrollIntoView()    
-        await this.expandBtn.waitForClickable()
-        await this.expandBtn.click()
     }
 
     startTopic = async (
