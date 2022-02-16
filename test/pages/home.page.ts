@@ -12,6 +12,7 @@ class HomePage extends BasePage{
         return $('img[src="demo/images/logo.png"]')
     }
     
+    //TODO: h2 button?
     button = (buttonText: string) => {
         return $(`h2=${buttonText}`)
     }
@@ -57,7 +58,7 @@ class HomePage extends BasePage{
         return this.registrationForm.$('input.button[value="Submit"]')
     }
 
-    get alert(){
+    get alertForm(){
         return $('#alert')
     }
 
@@ -187,9 +188,9 @@ class HomePage extends BasePage{
         return $('#enroll-button')
     }
 
-    get orderSummaryText(){
-        return $('span=Order Summary')
-    }
+
+
+
 
 
 

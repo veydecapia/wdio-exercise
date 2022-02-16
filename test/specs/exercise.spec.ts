@@ -1,6 +1,7 @@
 import HomePage from "../pages/home.page";
 import data from "../data/exercise.data.json";
-import { waitForPageToLoad } from "../shared/utils";
+import CheckoutPage from "../pages/checkout.page";
+import { click, sendKeys, waitForDocumentToLoad } from "../shared/utils";
 
 
 describe('Search and Enroll Course', () => {
@@ -48,10 +49,10 @@ describe('Search and Enroll Course', () => {
         //Act
         //TODO: Better to pass the input value instead
         await HomePage.fillOutRegistrationForm()
-        await HomePage.alert.waitForDisplayed()
+        await HomePage.alertForm.waitForDisplayed()
         
         //Assert
-        expect(await HomePage.alert.getText())
+        expect(await HomePage.alertForm.getText())
         .toBe(data.alertText)
     });
     
@@ -100,7 +101,7 @@ describe('Search and Enroll Course', () => {
 
         //Act
         await HomePage.startTopic(data.topic)
-        await waitForPageToLoad()
+        await waitForDocumentToLoad()
         await HomePage.lectureHeading.waitForDisplayed()
 
         //Assert
@@ -110,12 +111,12 @@ describe('Search and Enroll Course', () => {
 
 
     it('Should navigate back to previous page', async () => {
-        //Act
+        //Act: First back will result to scrolling upo
         await browser.back()
 
-        //Act
+        //Act: Second back will go back to the previous page
         await browser.back()
-        await waitForPageToLoad()
+        await waitForDocumentToLoad()
         await (await HomePage.h2Element("Get started now!")).waitForDisplayed()
 
         //Assert
@@ -157,17 +158,164 @@ describe('Search and Enroll Course', () => {
         expect(text).toBe(expectedText)
         expect(await HomePage.enrollCourseBtn.isEnabled()).toBe(false)
         
-        await waitForPageToLoad()
+        await waitForDocumentToLoad()
         expect(browser).toHaveUrlContaining('checkout')
+        expect(await CheckoutPage.orderSummaryText.isDisplayed()).toBe(true)
     });
 
 
-    describe.only('Checkout - Verify Required Error', () => {
-        it('Email', () => {
+    describe.only('Checkout - Verify Required Error', async () => {
+
+        it('Email', async () => {
             browser.maximizeWindow()
             browser.url('https://sso.teachable.com/secure/673/checkout/1310108/automation-architect-in-selenium-7-live-projects')
 
+            const element = await CheckoutPage.emailTxtbox
+            const blurElement = await CheckoutPage.orderSummaryText
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+        });
+
+        it('Name', async () => {
+            const element = await CheckoutPage.nameTxtbox
+            const blurElement = await CheckoutPage.emailTxtbox
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+        });
+
+        it('Card Name', async () => {
+            const element = await CheckoutPage.cardNameTxtbox
+            const blurElement = await CheckoutPage.nameTxtbox
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+        });
+
+        it('Card Number', async () => {
+            //Switch to iFrame
+            await browser.switchToFrame(await CheckoutPage.cardDetailsiFrame)
+            const element = await CheckoutPage.cardNumberTxtbox
             
+            //Act
+            await sendKeys(element, '')
+            // await element.clearValue() //TODO: Textbox not clearing
+
+            //Switch to default frame
+            await browser.switchToFrame(null) //OR we can use switchToParentFrame
+            const blurElement = await CheckoutPage.nameTxtbox
+
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.cardNumberAlert.isDisplayed()).toBe(true)
+            expect(await CheckoutPage.cardNumberAlert.getText()).toBe('Cannot be blank')
+        });
+
+        it('Expiration Date', async () => {
+            //Switch to iFrame
+            await browser.switchToFrame(await CheckoutPage.expirationDateiFrame)
+            const element = await CheckoutPage.cardExpireTxtbox
+            
+            //Act
+            await sendKeys(element, '')
+
+            //Switch to default frame
+            await browser.switchToFrame(null) //OR we can use switchToParentFrame
+            const blurElement = await CheckoutPage.nameTxtbox
+
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.cardExpireAlert.isDisplayed()).toBe(true)
+            expect(await CheckoutPage.cardExpireAlert.getText()).toBe('Cannot be blank')
+        });
+
+
+        it('CVC', async () => {
+            //Switch to iFrame
+            await browser.switchToFrame(await CheckoutPage.cvciFrame)
+            const element = await CheckoutPage.cvcTxtbox
+            
+            //Act
+            await sendKeys(element, '')
+
+            //Switch to default frame
+            await browser.switchToFrame(null) //OR we can use switchToParentFrame
+            const blurElement = await CheckoutPage.nameTxtbox
+
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.cvcAlert.isDisplayed()).toBe(true)
+            expect(await CheckoutPage.cvcAlert.getText()).toBe('Cannot be blank')
+        });
+
+
+        it('Street Address', async () => {
+            const element = await CheckoutPage.streetAddressTxtbox
+            const blurElement = await CheckoutPage.cardNameTxtbox
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+        });
+
+
+        it('City', async () => {
+            const element = await CheckoutPage.cityTxtbox
+            const blurElement = await CheckoutPage.cardNameTxtbox
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+        });
+
+
+        it('Postal Code', async () => {
+            const element = await CheckoutPage.postalCodeTxtbox
+            const blurElement = await CheckoutPage.cardNameTxtbox
+
+            //Act
+            await click(element)
+            //Blur
+            await click(blurElement)
+
+            //Assert
+            expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
+            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
         });
 
     });
