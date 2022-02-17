@@ -31,7 +31,7 @@ export const config: WebdriverIO.Config = {
         //    baseUrl: './'
         //}
     },
-    port: 4723,
+    // port: 5555,
     //
     // ==================
     // Specify Test Files
@@ -78,20 +78,59 @@ export const config: WebdriverIO.Config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
+
+    // capabilities: [{
     
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
-        maxInstances: 5,
-        //
+    //     // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+    //     // grid with only 5 firefox instances available you can make sure that not more than
+    //     // 5 instances get started at a time.
+    //     maxInstances: 1,
+    //     browserName: 'chrome',
+    //     acceptInsecureCerts: true
+    //     // If outputDir is provided WebdriverIO can capture driver session logs
+    //     // it is possible to configure which logTypes to include/exclude.
+    //     // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+    //     // excludeDriverLogs: ['bugreport', 'server'],
+    // }],
+
+    capabilities: [{
         browserName: 'chrome',
-        acceptInsecureCerts: true
+        'goog:chromeOptions': {
+        // to run chrome headless the following flags are required
+        // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
+            args: [ '--headless', '--version', '--start-maximized', '--incognito' , '--disable-gpu', 
+                    '--disable-extensions', '--disable-popup-blocking', '--disable-infobars'],
+        }
+        //
+        // Parameter to ignore some or all default flags
+        // - if value is true: ignore all DevTools 'default flags' and Puppeteer 'default arguments'
+        // - if value is an array: DevTools filters given default arguments
+        // 'wdio:devtoolsOptions': {
+        //    ignoreDefaultArgs: true,
+        //    ignoreDefaultArgs: ['--disable-sync', '--disable-extensions'],
+        // }
+    }, {
+        // maxInstances can get overwritten per capability. So if you have an in house Selenium
+        // grid with only 5 firefox instance available you can make sure that not more than
+        // 5 instance gets started at a time.
+        maxInstances: 5,
+        browserName: 'firefox',
+        specs: [
+            'test/ffOnly/*'
+        ],
+        'moz:firefoxOptions': {
+          // flag to activate Firefox headless mode (see https://github.com/mozilla/geckodriver/blob/master/README.md#firefox-capabilities for more details about moz:firefoxOptions)
+          args: ['-headless']
+        },
         // If outputDir is provided WebdriverIO can capture driver session logs
-        // it is possible to configure which logTypes to include/exclude.
+        // it is possible to configure which logTypes to exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-        // excludeDriverLogs: ['bugreport', 'server'],
+        excludeDriverLogs: ['bugreport', 'server'],
+        //
+        // Parameter to ignore some or all Puppeteer default arguments
+        // ignoreDefaultArgs: ['-foreground'], // set value to true to ignore all default arguments
     }],
+
     //
     // ===================
     // Test Configurations
@@ -117,7 +156,7 @@ export const config: WebdriverIO.Config = {
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
-    bail: 0,
+    bail: 1,
     //
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
@@ -140,14 +179,15 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver',
-                'appium',
-                'eslinter',
+    services: [
                 'rerun',
+                'chromedriver',
                 ['ms-teams', {
                     webhookURL: "https://magenic365.webhook.office.com/webhookb2/3ca2f0b2-1a0e-412b-a1c4-95ae1de2bbf3@0938e32f-3ac8-42db-8afc-037070df5145/IncomingWebhook/0d718eb7e8774492a14dd015f1791d02/169c2c80-2d2f-4bb7-866b-062825d990ec",
                     failingTestsOnly: true,
-                }]],
+                }]
+            ],
+   
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber

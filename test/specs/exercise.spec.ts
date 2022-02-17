@@ -8,7 +8,7 @@ describe('Search and Enroll Course', () => {
 
     it('Should navigate to the demo page', async () => {
         //Arrange
-        await browser.maximizeWindow()
+        // await browser.maximizeWindow()
         await HomePage.open()
 
         //Assert
@@ -81,8 +81,8 @@ describe('Search and Enroll Course', () => {
         expect(await element.isDisplayedInViewport()).toBe(true)
     });
 
-
-    it(`Slide Carousel to view course`, async () => {
+    //TODO: Only runs smoothly when ran on headless chrome and firefox
+    it(`Slide Carousel to view course: ${data.courseName}`, async () => {
         //Arrange
         await click(await HomePage.carouselSection)
 

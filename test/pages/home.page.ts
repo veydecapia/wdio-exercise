@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 import register from "../data/registration.json";
-import { click } from "../shared/utils";
+import { click, waitForDocumentToLoad } from "../shared/utils";
 
 
 class HomePage extends BasePage{
@@ -121,13 +121,22 @@ class HomePage extends BasePage{
     slideCourseIntoView = async (
         courseName: string
     ): Promise<void> => {
-        const text = (await this.infoBoxTitle.getText()).trim()
+
+        //*RECURSIVE IMPLEMENTATION 
+        /**
+         * Below is the recursive implementation on slide course
+         * Apparently, only runs smoothly on headless mode in chrome
+         * Otherwise, it's working on other browser
+         */
+        const text =  await (await this.infoBoxTitle).getText()
 
         console.log("Infobar Title: " + text)
 
         if(text !== courseName){
-            // await this.rightArrowBtn.click()
             await click(await this.rightArrowBtn)
+            
+            //Interval of  500ms before checking again
+            await browser.pause(500)
             
             await this.slideCourseIntoView(courseName)
         }
