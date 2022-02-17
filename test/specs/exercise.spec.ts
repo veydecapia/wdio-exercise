@@ -8,7 +8,6 @@ describe('Search and Enroll Course', () => {
 
     it('Should navigate to the demo page', async () => {
         //Arrange
-        // await browser.maximizeWindow()
         await HomePage.open()
 
         //Assert
@@ -85,9 +84,7 @@ describe('Search and Enroll Course', () => {
     it(`Slide Carousel to view course: ${data.courseName}`, async () => {
         //Arrange
         await click(await HomePage.carouselSection)
-
         await HomePage.slideCourseIntoView(data.courseName)
-        // await browser.debug()
         
         //Act
         await click(await HomePage.getStartedBtn)
@@ -105,7 +102,7 @@ describe('Search and Enroll Course', () => {
         //Act
         await HomePage.startTopic(data.topic)
         await waitForDocumentToLoad()
-        await HomePage.lectureHeading.waitForDisplayed()
+        await (await HomePage.lectureHeading).waitForDisplayed()
 
         //Assert
         const text = (await HomePage.lectureHeading.getText()).trim()
@@ -149,7 +146,7 @@ describe('Search and Enroll Course', () => {
 
         const expectedText = 'Processing...'
         await browser.waitUntil(
-           async () => (await HomePage.enrollCourseBtn.getText() === expectedText),
+           async () => (await (await HomePage.enrollCourseBtn).getText() === expectedText),
            {
                timeout: 3000,
                timeoutMsg: `Expected text to be changed to ${expectedText}`

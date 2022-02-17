@@ -27,17 +27,17 @@ export const click = async (
             })
 
     await element
-            .waitForClickable({
-                timeout: timeout,
-                timeoutMsg: 'Element not Clickable!'
-            })
-
-    await element
             .scrollIntoView({
                block: "end", 
                inline: "nearest", 
                behavior: "smooth"
            })
+
+    await element
+            .waitForClickable({
+                timeout: timeout,
+                timeoutMsg: 'Element not Clickable!'
+            })
 
     await element.click()
 }

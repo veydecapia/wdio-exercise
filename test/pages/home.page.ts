@@ -71,6 +71,7 @@ class HomePage extends BasePage{
      * See: test/data/registration.json
      */
     fillOutRegistrationForm = async ():Promise<void> => {
+        //TODO: Create sendkeys to handle setvalue, displayed/enabled
         await this.nameTxtbox.setValue(register.name)
         await this.phoneTxtbox.setValue(register.phone)
         await this.emailTxtbox.setValue(register.email)
@@ -87,11 +88,11 @@ class HomePage extends BasePage{
 
     goToLinkButton = async (
         text: string
-    ) => {
-        const element = $(`=${text}`)
+    ): Promise<void> => {
+        const element = await this.registrationForm.$(`=${text}`)
 
-        await element.waitForClickable()
-        await element.click()
+        await click(element)
+        await waitForDocumentToLoad()
     }
 
     private get rightArrowBtn(){
@@ -133,10 +134,10 @@ class HomePage extends BasePage{
         console.log("Infobar Title: " + text)
 
         if(text !== courseName){
-            await click(await this.rightArrowBtn)
+            await (await this.rightArrowBtn).click()
             
-            //Interval of  500ms before checking again
-            await browser.pause(500)
+            //Interval of  100ms before checking again
+            await browser.pause(100)
             
             await this.slideCourseIntoView(courseName)
         }
@@ -199,78 +200,73 @@ class HomePage extends BasePage{
 
     //===========================================
 
-    getActionNames1 = async () => {
+    // getActionNames1 = async () => {
 
-        /**
-         * For each linkbox get heading text .linkbox h1
-         * And get h2 text list .linkbox li h2
-         */
+    //     /**
+    //      * For each linkbox get heading text .linkbox h1
+    //      * And get h2 text list .linkbox li h2
+    //      */
 
-        let category = {};
-        let actions = [];
+    //     let category = {};
+    //     let actions = [];
 
-        $$('.linkbox').forEach( async category => {
-            //Get Category name
-            const text = await category.$('h1').getText();
+    //     $$('.linkbox').forEach( async category => {
+    //         //Get Category name
+    //         const text = await category.$('h1').getText();
 
-            console.log(text);
+    //         console.log(text);
 
-            await category.$$('li h2').forEach( async action =>{
-                const text = await action.getText();
+    //         await category.$$('li h2').forEach( async action =>{
+    //             const text = await action.getText();
 
-                console.log(text);
+    //             console.log(text);
 
-                actions.push(text);
-            })
+    //             actions.push(text);
+    //         })
 
-            category[text] = actions;
-            actions = [];
-        })
+    //         category[text] = actions;
+    //         actions = [];
+    //     })
             
-        console.log(category)
+    //     console.log(category)
 
 
         
-    }
+    // }
 
 
-    getActionNames = () => {
+    // getActionNames = () => {
 
-        /**
-         * For each linkbox get heading text .linkbox h1
-         * And get h2 text list .linkbox li h2
-         */
+    //     /**
+    //      * For each linkbox get heading text .linkbox h1
+    //      * And get h2 text list .linkbox li h2
+    //      */
 
-        let category = {};
-        let actions = [];
+    //     let category = {};
+    //     let actions = [];
 
-        $$('.linkbox').forEach( async category => {
-            //Get Category name
-            const text = await category.$('h1').getText();
+    //     $$('.linkbox').forEach( async category => {
+    //         //Get Category name
+    //         const text = await category.$('h1').getText();
 
-            console.log("Category: " + text);
+    //         console.log("Category: " + text);
 
-            category.$$('li h2').forEach( async action =>{
-                const text = await action.getText();
+    //         category.$$('li h2').forEach( async action =>{
+    //             const text = await action.getText();
 
-                console.log("Actions: " + text);
+    //             console.log("Actions: " + text);
 
-                actions.push(text);
-            }).then(() => {
-                category[text] = actions;
-                actions = [];
-            })
+    //             actions.push(text);
+    //         }).then(() => {
+    //             category[text] = actions;
+    //             actions = [];
+    //         })
 
             
-        }).then(() => {
-            console.log(category)
-        })
-            
-        
-
-
-        
-    }
+    //     }).then(() => {
+    //         console.log(category)
+    //     })
+    // }
 }
 
 
