@@ -94,14 +94,7 @@
     // - wdio.shared.local.appium.conf.ts
     // - wdio.shared.sauce.conf.ts
     // configuration files
-    services: [
-        'rerun',
-        'chromedriver',
-        ['ms-teams', {
-            webhookURL: "https://magenic365.webhook.office.com/webhookb2/3ca2f0b2-1a0e-412b-a1c4-95ae1de2bbf3@0938e32f-3ac8-42db-8afc-037070df5145/IncomingWebhook/0d718eb7e8774492a14dd015f1791d02/169c2c80-2d2f-4bb7-866b-062825d990ec",
-            failingTestsOnly: true,
-        }]
-    ],
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
