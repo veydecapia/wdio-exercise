@@ -35,7 +35,7 @@ describe('Search and Enroll Course', () => {
         
 
         //Assert
-        expect(link).toBe(data.url)
+        expect(link).toContain(data.url)
         expect(browser).toHaveUrlContaining('way2auto_jquery')
         
         //Check Dummy Registration Form if visible

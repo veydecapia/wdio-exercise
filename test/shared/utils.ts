@@ -50,24 +50,32 @@ export const sendKeys = async (
     timeout?: number
 ): Promise<void> => {
 
-    await element
-            .waitForDisplayed({
-                timeout: timeout,
-                timeoutMsg: 'Element not Displayed!'
-            })
+    if(browser.isAndroid){ 
+        // if(await browser.isKeyboardShown()) await browser.hideKeyboard()
+        // await element.doubleClick()
+        await browser.touchAction({action: 'moveTo', element: element})
+        await browser.touchAction({action: 'tap', element: element})
+    }
 
     await element
-            .waitForEnabled({
-                timeout: timeout,
-                timeoutMsg: 'Element is Disabled!'
-            })
+        .waitForDisplayed({
+            timeout: timeout,
+            timeoutMsg: 'Element not Displayed!'
+        })
 
     await element
-            .scrollIntoView({
-                block: "end", 
-                inline: "nearest", 
-                behavior: "smooth"
-            })
+        .scrollIntoView({
+            block: "end", 
+            inline: "nearest", 
+            behavior: "smooth"
+        })
 
+    await element
+        .waitForEnabled({
+            timeout: timeout,
+            timeoutMsg: 'Element is Disabled!'
+        })
+
+    //TODO: Add wait until isDisplayedInViewPort?
     await element.setValue(text)
 }

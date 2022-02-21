@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 import register from "../data/registration.json";
-import { click, waitForDocumentToLoad } from "../shared/utils";
+import { click, waitForDocumentToLoad, sendKeys } from "../shared/utils";
 
 
 class HomePage extends BasePage{
@@ -71,18 +71,30 @@ class HomePage extends BasePage{
      * See: test/data/registration.json
      */
     fillOutRegistrationForm = async ():Promise<void> => {
-        //TODO: Create sendkeys to handle setvalue, displayed/enabled
-        await this.nameTxtbox.setValue(register.name)
-        await this.phoneTxtbox.setValue(register.phone)
-        await this.emailTxtbox.setValue(register.email)
-        await this.countryCbobox.selectByVisibleText(register.country)
-        await this.cityTxtbox.setValue(register.city)
-        await this.usernameTxtbox.setValue(register.username)
-        await this.passwordTxtbox.setValue(register.password)
-        
+
+        //Handle Android and Hide keyboard when shown
+        if(browser.isAndroid){ 
+            if(await browser.isKeyboardShown()) await browser.hideKeyboard()
+            await this.nameTxtbox.doubleClick()
+        }
+
+        await sendKeys(await this.nameTxtbox, register.name)
+        await sendKeys(await this.phoneTxtbox, register.phone)
+        await sendKeys(await this.emailTxtbox, register.email)
+        await (await this.countryCbobox).selectByVisibleText(register.country)
+
+        //Handle Android and Hide keyboard when shown
+        if(browser.isAndroid){ 
+            if(await browser.isKeyboardShown()) await browser.hideKeyboard()
+            await this.nameTxtbox.doubleClick()
+        }
+
+        await sendKeys(await this.cityTxtbox, register.city)
+        await sendKeys(await this.usernameTxtbox, register.username)
+        await sendKeys(await this.passwordTxtbox, register.password)
+
         //Click Submit Button
-        await this.submitBtn.waitForClickable()
-        await this.submitBtn.click()
+        await click(await this.submitBtn)
     }
 
 

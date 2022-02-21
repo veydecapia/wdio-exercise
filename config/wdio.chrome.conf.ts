@@ -19,7 +19,8 @@ config.capabilities = [
         // to run chrome headless the following flags are required
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
             args: [
-                    'headless', 'version', 'start-maximized', 'incognito' , 'disable-gpu', 
+                    'headless', 
+                    'version', 'start-maximized', 'incognito' , 'disable-gpu', 
                     'disable-extensions', 'disable-popup-blocking', 'disable-infobars'
                 ],
         }
