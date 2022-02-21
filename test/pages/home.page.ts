@@ -134,7 +134,7 @@ class HomePage extends BasePage{
         /**
          * Below is the recursive implementation on slide course
          * Apparently, only runs smoothly on headless mode in chrome
-         * Otherwise, it's working on other browser
+         * Tested and working on Firefox
          */
         const text =  await (await this.infoBoxTitle).getText()
 
@@ -198,82 +198,24 @@ class HomePage extends BasePage{
     }
 
 
+    getActionNames = async (): Promise<void> => {
 
+        const text = await $$('.linkbox').map( async category => {
+                let obj: Record<string, any> = {}
+                const categoryText = await category.$('h1').getText()
+                const actionsText = await category.$$('li h2').map( action => action.getText())
+                
+                //Assign Actions to category
+                obj[categoryText] = actionsText
 
+                // console.log(categoryText)
+                // console.log(actionsText)
+                return obj[categoryText]
+            })
 
+        console.log(text)
+    }
 
-
-
-
-    //===========================================
-
-    // getActionNames1 = async () => {
-
-    //     /**
-    //      * For each linkbox get heading text .linkbox h1
-    //      * And get h2 text list .linkbox li h2
-    //      */
-
-    //     let category = {};
-    //     let actions = [];
-
-    //     $$('.linkbox').forEach( async category => {
-    //         //Get Category name
-    //         const text = await category.$('h1').getText();
-
-    //         console.log(text);
-
-    //         await category.$$('li h2').forEach( async action =>{
-    //             const text = await action.getText();
-
-    //             console.log(text);
-
-    //             actions.push(text);
-    //         })
-
-    //         category[text] = actions;
-    //         actions = [];
-    //     })
-            
-    //     console.log(category)
-
-
-        
-    // }
-
-
-    // getActionNames = () => {
-
-    //     /**
-    //      * For each linkbox get heading text .linkbox h1
-    //      * And get h2 text list .linkbox li h2
-    //      */
-
-    //     let category = {};
-    //     let actions = [];
-
-    //     $$('.linkbox').forEach( async category => {
-    //         //Get Category name
-    //         const text = await category.$('h1').getText();
-
-    //         console.log("Category: " + text);
-
-    //         category.$$('li h2').forEach( async action =>{
-    //             const text = await action.getText();
-
-    //             console.log("Actions: " + text);
-
-    //             actions.push(text);
-    //         }).then(() => {
-    //             category[text] = actions;
-    //             actions = [];
-    //         })
-
-            
-    //     }).then(() => {
-    //         console.log(category)
-    //     })
-    // }
 }
 
 
