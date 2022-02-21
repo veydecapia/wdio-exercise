@@ -12,11 +12,6 @@ class HomePage extends BasePage{
     get logo(){
         return $('img[src="demo/images/logo.png"]')
     }
-    
-    //TODO: h2 button?
-    button = (buttonText: string) => {
-        return $(`h2=${buttonText}`)
-    }
 
     private get registrationForm(){
         return $('#load_box')
@@ -182,16 +177,16 @@ class HomePage extends BasePage{
     }
 
 
-    h2Element = async (
+    h2Element = (
         text: string
     ) => {
-        return await $(`h2*=${text}`)
+        return $(`h2*=${text}`)
     }
 
-    h3Element = async (
+    h3Element = (
         text: string
     ) => {
-        return await $(`h3*=${text}`)
+        return $(`h3*=${text}`)
     }
 
     get activeProductPrice(){
