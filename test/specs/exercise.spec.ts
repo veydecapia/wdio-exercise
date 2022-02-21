@@ -173,7 +173,7 @@ describe('Search and Enroll Course', () => {
             //Act
             await click(element)
             //Blur
-            await blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
@@ -187,7 +187,7 @@ describe('Search and Enroll Course', () => {
             //Act
             await click(element)
             //Blur
-            await blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
@@ -201,7 +201,7 @@ describe('Search and Enroll Course', () => {
             //Act
             await click(element)
             //Blur
-            await blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
@@ -222,7 +222,7 @@ describe('Search and Enroll Course', () => {
             const blurElement = await CheckoutPage.nameTxtbox
 
             //Blur
-            await blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.cardNumberAlert.isDisplayed()).toBe(true)
@@ -242,7 +242,7 @@ describe('Search and Enroll Course', () => {
             const blurElement = await CheckoutPage.nameTxtbox
 
             //Blur
-            blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.cardExpireAlert.isDisplayed()).toBe(true)
@@ -263,7 +263,7 @@ describe('Search and Enroll Course', () => {
             const blurElement = await CheckoutPage.nameTxtbox
 
             //Blur
-            blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.cvcAlert.isDisplayed()).toBe(true)
@@ -278,7 +278,7 @@ describe('Search and Enroll Course', () => {
             //Act
             await click(element)
             //Blur
-            blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
@@ -288,12 +288,12 @@ describe('Search and Enroll Course', () => {
 
         it('City', async () => {
             const element = await CheckoutPage.cityTxtbox
-            const blurElement = await CheckoutPage.streetAddressTxtbox
+            const blurElement = await CheckoutPage.cardNameTxtbox
 
             //Act
             await click(element)
             //Blur
-            blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
@@ -303,12 +303,12 @@ describe('Search and Enroll Course', () => {
 
         it('Postal Code', async () => {
             const element = await CheckoutPage.postalCodeTxtbox
-            const blurElement = await CheckoutPage.cityTxtbox
+            const blurElement = await CheckoutPage.cardNameTxtbox
 
             //Act
             await click(element)
             //Blur
-            blurElement.click()
+            await click(blurElement)
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
