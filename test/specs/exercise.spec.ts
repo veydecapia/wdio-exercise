@@ -12,10 +12,10 @@ describe('Search and Enroll Course', () => {
         //Act
         await HomePage.open()
 
+        await waitForDocumentToLoad()
         //Assert
         expect(browser).toHaveUrlContaining('demo.html')
         expect(browser).toHaveTitle('Welcome')
-
         expect(await HomePage.logo.isDisplayed()).toBe(true)
     });
 

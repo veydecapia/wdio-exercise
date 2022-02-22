@@ -1,6 +1,7 @@
 import BasePage from "./base.page";
 import register from "../data/registration.json";
 import { click, waitForDocumentToLoad, sendKeys } from "../shared/utils";
+import { forEach, map } from 'p-iteration'
 
 
 class HomePage extends BasePage{
@@ -200,6 +201,14 @@ class HomePage extends BasePage{
     getActionNames = async (): Promise<Record<any, any>> => {
 
         let obj: Record<any, any> = {}
+
+        /**
+         * Need to use map that returns a promise instead of using forEach
+         * forEach is not ideal to iterate over the elements because
+         * it does not return the result of the iterator function.
+         * @reference https://webdriver.io/docs/async-migration/
+         * Alternatively, we can use the the p-iteration package
+         */
         await $$('.linkbox').map( async category => {        
                 const categoryText = await category.$('h1').getText()
                 const actionsText = await category.$$('li h2').map( action => action.getText())
@@ -207,6 +216,29 @@ class HomePage extends BasePage{
                 obj[categoryText] = actionsText
             })
         return obj;
+    }
+
+
+    getActionNames_pIteration = async (): Promise<Record<any, any>> => {
+        let obj: Record<any, any> = {}
+
+        let linkbox = await $$('.linkbox')
+
+        // const categoryText = await linkbox.map( category => category.getText())
+        // console.log(categoryText)
+
+        /**
+         * Uses p-iteration package
+         * @reference https://www.npmjs.com/package/p-iteration
+         */
+        await forEach(linkbox, async (category) => {
+            const categoryText = await category.$('h1').getText()
+            const actionsText = await category.$$('li h2').map( action => action.getText())
+            
+            obj[categoryText] = actionsText
+        })
+
+        return obj
     }
 
 }
