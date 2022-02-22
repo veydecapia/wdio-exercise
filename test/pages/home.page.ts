@@ -69,21 +69,15 @@ class HomePage extends BasePage{
     fillOutRegistrationForm = async ():Promise<void> => {
 
         //Handle Android and Hide keyboard when shown
-        if(browser.isAndroid){ 
-            if(await browser.isKeyboardShown()) await browser.hideKeyboard()
-            await this.nameTxtbox.doubleClick()
-        }
+        // if(browser.isAndroid){ 
+        //     if(await browser.isKeyboardShown()) await browser.hideKeyboard()
+        //     await this.nameTxtbox.doubleClick()
+        // }
 
         await sendKeys(await this.nameTxtbox, register.name)
         await sendKeys(await this.phoneTxtbox, register.phone)
         await sendKeys(await this.emailTxtbox, register.email)
         await (await this.countryCbobox).selectByVisibleText(register.country)
-
-        //Handle Android and Hide keyboard when shown
-        if(browser.isAndroid){ 
-            if(await browser.isKeyboardShown()) await browser.hideKeyboard()
-            await this.nameTxtbox.doubleClick()
-        }
 
         await sendKeys(await this.cityTxtbox, register.city)
         await sendKeys(await this.usernameTxtbox, register.username)
@@ -144,8 +138,8 @@ class HomePage extends BasePage{
         if(text !== courseName){
             await (await this.rightArrowBtn).click()
             
-            //Interval of  100ms before checking again
-            await browser.pause(100)
+            //Interval of 500ms before checking again
+            await browser.pause(500)
             
             await this.slideCourseIntoView(courseName)
         }
