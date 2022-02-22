@@ -205,12 +205,9 @@ class HomePage extends BasePage{
                 const categoryText = await category.$('h1').getText()
                 const actionsText = await category.$$('li h2').map( action => action.getText())
                 
-                //Assign Actions to category
                 obj[categoryText] = actionsText
 
-                // console.log(categoryText)
-                // console.log(actionsText)
-                return obj[categoryText]
+                return obj
             })
 
         console.log(text)
