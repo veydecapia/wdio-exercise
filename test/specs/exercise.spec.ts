@@ -2,12 +2,14 @@ import HomePage from "../pages/home.page";
 import data from "../data/exercise.data.json";
 import CheckoutPage from "../pages/checkout.page";
 import { click, sendKeys, waitForDocumentToLoad } from "../shared/utils";
+import fs from 'fs';
+
 
 
 describe('Search and Enroll Course', () => {
 
     it('Should navigate to the demo page', async () => {
-        //Arrange
+        //Act
         await HomePage.open()
 
         //Assert
@@ -18,13 +20,24 @@ describe('Search and Enroll Course', () => {
     });
 
 
-    it.skip('Should list all Action name', async () => {
-        // await HomePage.getActionNames()
+    it('Should list all Action name', async () => {
+        //Arrange
+        let obj = await HomePage.getActionNames()
+
+        //Act: Write to file
+        fs.writeFile('./results/actionNames.json', 
+                        JSON.stringify(obj, null, 4), (err) => {
+            if(err){
+                return console.error(err)
+            }
+        });
+
+        //Assert
     });
 
 
-    it(`Should retrieve the link from ${data.buttonName} 
-                        and visit`, async () => {
+    it(`Should retrieve the link from ${data.buttonName} and visit`,
+         async () => {
         //Arrange: Get the link from the button
         const link = await HomePage.h2Element(data.buttonName)
                                 .parentElement()
@@ -116,7 +129,8 @@ describe('Search and Enroll Course', () => {
         //Act: Second back will go back to the previous page
         await browser.back()
         await waitForDocumentToLoad()
-        await (await HomePage.h2Element("Get started now!")).waitForDisplayed()
+        await (await HomePage.h2Element("Get started now!"))
+                                        .waitForDisplayed()
 
         //Assert
         expect(await browser.getUrl()).toBe(data.courseUrl)
@@ -145,7 +159,8 @@ describe('Search and Enroll Course', () => {
 
         const expectedText = 'Processing...'
         await browser.waitUntil(
-           async () => (await (await HomePage.enrollCourseBtn).getText() === expectedText),
+           async () => (await (await HomePage.enrollCourseBtn)
+                                    .getText() === expectedText),
            {
                timeout: 3000,
                timeoutMsg: `Expected text to be changed to ${expectedText}`

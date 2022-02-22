@@ -197,20 +197,16 @@ class HomePage extends BasePage{
         return $('#enroll-button')
     }
 
+    getActionNames = async (): Promise<Record<any, any>> => {
 
-    getActionNames = async (): Promise<void> => {
-
-        const text = await $$('.linkbox').map( async category => {
-                let obj: Record<string, any> = {}
+        let obj: Record<any, any> = {}
+        await $$('.linkbox').map( async category => {        
                 const categoryText = await category.$('h1').getText()
                 const actionsText = await category.$$('li h2').map( action => action.getText())
                 
                 obj[categoryText] = actionsText
-
-                return obj
             })
-
-        console.log(text)
+        return obj;
     }
 
 }
