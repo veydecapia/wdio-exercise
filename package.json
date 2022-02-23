@@ -21,6 +21,7 @@
     "scripts": {
         "chrome": "wdio config/wdio.chrome.conf.ts",
         "ff": "wdio config/wdio.firefox.conf.ts",
-        "android.browser": "wdio config/wdio.android.browser.conf.ts"
+        "android.browser": "wdio config/wdio.android.browser.conf.ts",
+        "android.app": "wdio config/wdio.android.app.conf.ts"
     }
 }

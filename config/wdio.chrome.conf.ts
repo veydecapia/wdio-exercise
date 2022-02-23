@@ -4,7 +4,7 @@ import { config } from './wdio.shared.conf';
 // Specs
 // ============
 config.specs = [
-    './test/specs/exercise.spec.ts',
+    './test/specs/browser/exercise.spec.ts',
 ];
 
 // ============

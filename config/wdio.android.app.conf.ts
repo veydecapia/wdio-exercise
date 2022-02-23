@@ -1,10 +1,11 @@
+import { join } from 'path';
 import config from './wdio.shared.local.appium.conf';
 
 // ============
 // Specs
 // ============
 config.specs = [
-    './test/specs/browser/exercise.spec.ts',
+    './test/specs/app/app*.spec.ts',
 ];
 
 // ============
@@ -16,14 +17,21 @@ config.capabilities = [
     {
         // The defaults you need to have in your config
         platformName: 'Android',
-        browserName: 'chrome',
         maxInstances: 1,
         // For W3C the appium capabilities need to have an extension prefix
         // http://appium.io/docs/en/writing-running-appium/caps/
         // This is `appium:` for all Appium Capabilities which can be found here
-        'appium:deviceName': 'Pixel_3_10.0',
+        'appium:deviceName': 'Android Emulator',
         'appium:platformVersion': '10.0',
         'appium:orientation': 'PORTRAIT',
+        'appium:automationName': 'UiAutomator2',
+        // The path to the app
+        'appium:app': join(process.cwd(), './apps/MAQS_Demo.apk'),
+        // @ts-ignore
+        'appium:appWaitActivity': 'com.magenic.appiumtesting.maqsregistrydemo.LoginPage',
+        // Read the reset strategies very well, they differ per platform, see
+        // http://appium.io/docs/en/writing-running-appium/other/reset-strategies/
+        'appium:noReset': true,
         'appium:newCommandTimeout': 240,
     },
 ];

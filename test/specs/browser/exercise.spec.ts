@@ -1,7 +1,7 @@
-import HomePage from "../pages/home.page";
-import data from "../data/exercise.data.json";
-import CheckoutPage from "../pages/checkout.page";
-import { click, sendKeys, waitForDocumentToLoad } from "../shared/utils";
+import HomePage from "../../pages/home.page";
+import data from "../../data/exercise.data.json";
+import CheckoutPage from "../../pages/checkout.page";
+import { click, sendKeys, waitForDocumentToLoad } from "../../shared/utils";
 import fs from 'fs';
 
 
@@ -11,8 +11,8 @@ describe('Search and Enroll Course', () => {
     it('Should navigate to the demo page', async () => {
         //Act
         await HomePage.open()
-
         await waitForDocumentToLoad()
+
         //Assert
         expect(browser).toHaveUrlContaining('demo.html')
         expect(browser).toHaveTitle('Welcome')
@@ -22,6 +22,7 @@ describe('Search and Enroll Course', () => {
 
     it('Should list all Action name', async () => {
         //Arrange
+        //TODO: Delete the actionNames.json file first
         let obj = await HomePage.getActionNames()
 
         //Act: Write to file
@@ -33,6 +34,7 @@ describe('Search and Enroll Course', () => {
         });
 
         //Assert
+        //TODO: Add assertion. Verify if the file is created.
     });
 
 
