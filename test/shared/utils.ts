@@ -20,6 +20,8 @@ export const click = async (
     element:  WebdriverIO.Element,
     timeout?: number
 ): Promise<void> => {
+
+    //Add try catch here and pass number of retries
     await element
             .waitForDisplayed({
                 timeout: timeout,
@@ -43,20 +45,11 @@ export const click = async (
 }
 
 
-
 export const sendKeys = async (
     element: WebdriverIO.Element,
     text: string,
     timeout?: number
 ): Promise<void> => {
-
-    if(browser.isAndroid){ 
-        // if(await browser.isKeyboardShown()) await browser.hideKeyboard()
-        // await element.doubleClick()
-        await browser.touchAction({action: 'moveTo', element: element})
-        await browser.touchAction({action: 'tap', element: element})
-    }
-
     await element
         .waitForDisplayed({
             timeout: timeout,
@@ -79,3 +72,16 @@ export const sendKeys = async (
     //TODO: Add wait until isDisplayedInViewPort?
     await element.setValue(text)
 }
+
+
+// // Helper in case you want to add the package name
+// // Should not be needed
+// const prefix = (
+//     selector: string
+// ) => {
+//     if(browser.isAndroid){
+//       const { appPackage, 'appium:appPackage': appiumAppPackage } = browser.capabilities;
+//       return `${appPackage || appiumAppPackage}:id/${selector}`;
+//     }
+//     return selector;
+//   };
