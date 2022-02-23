@@ -1,26 +1,29 @@
 
-
 class LoginScreen {
 
 
     get usernameLbl(){
-        return $('id=com.magenic.appiumtesting.maqsregistrydemo:id/userNameLabel')
+        return $('id=userNameLabel')
     }
 
     private get usernameTxtbox(){
-        return $('id=com.magenic.appiumtesting.maqsregistrydemo:id/userNameField')
+        return $('id=userNameField')
     }
 
     private get passwordTxtbox(){
-        return $('id:com.magenic.appiumtesting.maqsregistrydemo:id/passwordField')
+        return $('id=passwordField')
     }
 
     private get loginBtn(){
-        return $('id:com.magenic.appiumtesting.maqsregistrydemo:id/loginButton')
+        return $('id=loginButton')
     }
 
     get welcomeLbl(){
-        return $('id:com.magenic.appiumtesting.maqsregistrydemo:id/welcomeLabel')
+        return $('id=welcomeLabel')
+    }
+
+    get alertLbl(){
+        return $('id=alertTitle')
     }
 
     /**
@@ -33,8 +36,11 @@ class LoginScreen {
         username: string,
         password: string
     ) => {
+        // await sendKeys(await this.usernameTxtbox, username)
+        // await sendKeys(await this.passwordTxtbox, password)
         await this.usernameTxtbox.setValue(username)
         await this.passwordTxtbox.setValue(password)
+
 
         //Only works on Android for now as per the documentation
         await browser.hideKeyboard()
