@@ -16,7 +16,7 @@ describe('Search and Enroll Course', () => {
         //Assert
         expect(browser).toHaveUrlContaining('demo.html')
         expect(browser).toHaveTitle('Welcome')
-        expect(await HomePage.logo.isDisplayed()).toBe(true)
+        expect(await HomePage.logo).toBeDisplayed()
     });
 
 
@@ -53,9 +53,7 @@ describe('Search and Enroll Course', () => {
         expect(browser).toHaveUrlContaining('way2auto_jquery')
         
         //Check Dummy Registration Form if visible
-        expect(await HomePage.registrationFormHeader
-                                .isDisplayed()).toBe(true)
-                                
+        expect(await HomePage.registrationFormHeader).toBeDisplayed()
     });
 
 
@@ -66,8 +64,7 @@ describe('Search and Enroll Course', () => {
         await HomePage.alertForm.waitForDisplayed()
         
         //Assert
-        expect(await HomePage.alertForm.getText())
-        .toBe(data.alertText)
+        expect(await HomePage.alertForm).toHaveText(data.alertText)
     });
     
     
@@ -91,7 +88,7 @@ describe('Search and Enroll Course', () => {
         await element.scrollIntoView()
 
         //Assert
-        expect(await element.isDisplayedInViewport()).toBe(true)
+        expect(element).toBeDisplayedInViewport()
     });
 
     //TODO: Only runs smoothly when ran on headless chrome and firefox
@@ -104,8 +101,7 @@ describe('Search and Enroll Course', () => {
         await click(await HomePage.getStartedBtn)
 
         //Assert
-        //TODO: Check why toHaveUrl negative test is not working
-        expect(await browser.getUrl()).toBe(data.courseUrl)
+        expect(browser).toHaveUrl(data.courseUrl)
     });
 
 
@@ -119,8 +115,7 @@ describe('Search and Enroll Course', () => {
         await (await HomePage.lectureHeading).waitForDisplayed()
 
         //Assert
-        const text = (await HomePage.lectureHeading.getText()).trim()
-        expect(text).toBe(data.topic)
+        expect(await HomePage.lectureHeading).toHaveText(data.topic)
     });
 
 
@@ -135,7 +130,7 @@ describe('Search and Enroll Course', () => {
                                         .waitForDisplayed()
 
         //Assert
-        expect(await browser.getUrl()).toBe(data.courseUrl)
+        expect(browser).toHaveUrl(data.courseUrl)
     });
 
 
@@ -150,8 +145,7 @@ describe('Search and Enroll Course', () => {
         await click(element)
 
         //Assert
-        const priceText = await HomePage.activeProductPrice.getText()
-        expect(priceText).toBe('£15')
+        expect(await HomePage.activeProductPrice).toHaveText('£15')
     });
 
 
@@ -170,14 +164,14 @@ describe('Search and Enroll Course', () => {
         )
 
         //Assert
-        const text = await HomePage.enrollCourseBtn.getText()
-        expect(text).toBe(expectedText)
-        expect(await HomePage.enrollCourseBtn.isEnabled()).toBe(false)
+        expect(await HomePage.enrollCourseBtn).toHaveText(expectedText)
+        expect(await HomePage.enrollCourseBtn).toBeEnabled()
         
         await waitForDocumentToLoad()
         expect(browser).toHaveUrlContaining('checkout')
+
         await CheckoutPage.orderSummaryText.waitForDisplayed()
-        expect(await CheckoutPage.orderSummaryText.isDisplayed()).toBe(true)
+        expect(await CheckoutPage.orderSummaryText).toBeDisplayed()
     });
 
 
@@ -194,7 +188,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
         it('Name', async () => {
@@ -208,7 +202,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
         it('Card Name', async () => {
@@ -222,7 +216,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
         it('Card Number', async () => {
@@ -243,7 +237,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.cardNumberAlert.isDisplayed()).toBe(true)
-            expect(await CheckoutPage.cardNumberAlert.getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.cardNumberAlert).toHaveText('Cannot be blank')
         });
 
         it('Expiration Date', async () => {
@@ -263,7 +257,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.cardExpireAlert.isDisplayed()).toBe(true)
-            expect(await CheckoutPage.cardExpireAlert.getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.cardExpireAlert).toHaveText('Cannot be blank')
         });
 
 
@@ -284,7 +278,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.cvcAlert.isDisplayed()).toBe(true)
-            expect(await CheckoutPage.cvcAlert.getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.cvcAlert).toHaveText('Cannot be blank')
         });
 
 
@@ -299,7 +293,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
 
@@ -314,7 +308,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
 
@@ -329,7 +323,7 @@ describe('Search and Enroll Course', () => {
 
             //Assert
             expect(await CheckoutPage.isAlertDisplayed(element)).toBe(true)
-            expect(await (await CheckoutPage.alertRequired(element)).getText()).toBe('Cannot be blank')
+            expect(await CheckoutPage.alertRequired(element)).toHaveText('Cannot be blank')
         });
 
     });
