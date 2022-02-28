@@ -4,7 +4,7 @@ import { config } from './wdio.shared.conf';
 // Specs
 // ============
 config.specs = [
-    './test/specs/exercise.spec.ts',
+    './test/specs/browser/exercise.spec.ts',
 ];
 
 // ============
@@ -37,7 +37,7 @@ config.capabilities = [
 config.services = [
         // 'rerun',
         // 'chromedriver',
-        ['selenium-standalone', { drivers: { firefox: true, chrome: 'latest', chromiumedge: 'latest' } }],
+        ['selenium-standalone', { drivers: { firefox: 'latest', chrome: 'latest', chromiumedge: 'latest' } }],
         ['ms-teams', {
             webhookURL: "https://magenic365.webhook.office.com/webhookb2/3ca2f0b2-1a0e-412b-a1c4-95ae1de2bbf3@0938e32f-3ac8-42db-8afc-037070df5145/IncomingWebhook/0d718eb7e8774492a14dd015f1791d02/169c2c80-2d2f-4bb7-866b-062825d990ec",
             failingTestsOnly: true,
